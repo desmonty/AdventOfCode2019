@@ -102,6 +102,66 @@ class IntCode(object):
                 )
                 instruction_pointer += 2
 
+            # jump-if-true
+            elif opCode == 5:
+                tmp_condition = self.get_value(
+                    instruction_pointer + 1,
+                    parameter_mode=parameter_modes[0]
+                )
+                if tmp_condition != 0:
+                    instruction_pointer = self.get_value(
+                        instruction_pointer + 2,
+                        parameter_mode=parameter_modes[1]
+                    )
+                else:
+                    instruction_pointer += 3
+
+            # jump-if-false
+            elif opCode == 6:
+                tmp_condition = self.get_value(
+                    instruction_pointer + 1,
+                    parameter_mode=parameter_modes[0]
+                )
+                if tmp_condition == 0:
+                    instruction_pointer = self.get_value(
+                        instruction_pointer + 2,
+                        parameter_mode=parameter_modes[1]
+                    )
+                else:
+                    instruction_pointer += 3
+
+            # less than
+            elif opCode == 7:
+                value_1 = self.get_value(
+                    instruction_pointer + 1,
+                    parameter_mode=parameter_modes[0]
+                )
+                value_2 = self.get_value(
+                    instruction_pointer + 2,
+                    parameter_mode=parameter_modes[1]
+                )
+                self.set_value(
+                    instruction_pointer + 3,
+                    1 if value_1 < value_2 else 0
+                )
+                instruction_pointer += 4
+
+            # equals
+            elif opCode == 8:
+                value_1 = self.get_value(
+                    instruction_pointer + 1,
+                    parameter_mode=parameter_modes[0]
+                )
+                value_2 = self.get_value(
+                    instruction_pointer + 2,
+                    parameter_mode=parameter_modes[1]
+                )
+                self.set_value(
+                    instruction_pointer + 3,
+                    1 if value_1 == value_2 else 0
+                )
+                instruction_pointer += 4
+
             else:
                 if return_only:
                     self.program = program_tmp
