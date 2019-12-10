@@ -8,12 +8,12 @@ class IntCode(object):
     def __init__(self, program):
         super(IntCode, self).__init__()
 
+        self.original_program = program
         # If str, assume it's a filename
         if type(program) == str:
             with open(program, mode='r') as input_file:
                 self.original_program = [int(x) for x in input_file.read().split(",")]
 
-        self.original_program = program
         self.program = copy.deepcopy(self.original_program)
         self.inputs = []
         self.outputs = []
@@ -171,10 +171,9 @@ class IntCode(object):
             self.inputs = inputs
             self.input_pointer = 0
 
-        instruction_pointer = 0
-        while instruction_pointer < len(self.program):
+        while self.instruction_pointer < len(self.program):
             # Get opCode and parameter modes
-            instruction_code = str(self.program[instruction_pointer])
+            instruction_code = str(self.program[self.instruction_pointer])
             parameter_modes = [0] * IntCode.max_params
             if len(instruction_code) <= 2:
                 opCode = int(instruction_code)
@@ -186,10 +185,11 @@ class IntCode(object):
             # Terminate self.program
             if opCode == 99:
                 if return_only:
-                    self.program = program_tmp
+                    outputs = self.get_output()
+                    self.init_params()
                     return self.get_output()
                 else:
-                    return
+                    return self.get_output()
             # Add numbers
             elif opCode == 1:
                 self.op_add(parameter_modes)
@@ -218,11 +218,11 @@ class IntCode(object):
                 self.op_equals(parameter_modes)
             else:
                 if return_only:
-                    self.program = program_tmp
+                    self.init_params()
                 raise ValueError("SegFault LOL")
 
         if return_only:
-            self.program = program_tmp
+            self.init_params()
 
         return self.program
 
