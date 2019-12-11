@@ -22,7 +22,8 @@ if __name__=='__main__':
     program_bp = IntCode([104,1125899906842624,99])
     assert program_bp.run()[0] == 1125899906842624
 
-    print(IntCode([109, 4, 203, -4, 204, -4, 99]).run(inputs=[9999999]))
+    for i in range(10):
+        assert IntCode([109, 4, 203, -4, 204, -4, 99]).run(inputs=[i])[0] == i
 
     program = IntCode('input.csv')    
     out = program.run(inputs=[1])
