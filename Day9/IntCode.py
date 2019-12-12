@@ -171,7 +171,7 @@ class IntCode(object):
         """
         Change the current relative base of the program.
         """
-        self.relative_base = self.get_value(
+        self.relative_base += self.get_value(
             self.instruction_pointer + 1,
             parameter_mode=parameter_modes[0]
         )
@@ -240,6 +240,7 @@ class IntCode(object):
             # equals
             elif opCode == 8:
                 self.op_equals(parameter_modes)
+            # relative base change
             elif opCode == 9:
                 self.op_change_relative_base(parameter_modes)
             else:

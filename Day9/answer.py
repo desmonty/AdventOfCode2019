@@ -4,12 +4,11 @@ from math import log
 if __name__=='__main__':
     # Test Replicant
     replicant = IntCode([
-        1001, 100, 1, 100,
-        1009, 100,
+        109, 1,
         204, -1,
         1001, 100, 1, 100,
-        1008, 100, 21, 101,
-        1006, 101, 4,
+        1008, 100, 16, 101,
+        1006, 101, 0,
         99
     ])
     assert replicant.original_program == replicant.run()
@@ -25,6 +24,9 @@ if __name__=='__main__':
     for i in range(10):
         assert IntCode([109, 4, 203, -4, 204, -4, 99]).run(inputs=[i])[0] == i
 
-    program = IntCode('input.csv')    
+    program = IntCode('input.csv') 
     out = program.run(inputs=[1])
+    print("Answer #9.1: ", out)
+
+    out = program.run(inputs=[2])
     print("Answer #9.1: ", out)
